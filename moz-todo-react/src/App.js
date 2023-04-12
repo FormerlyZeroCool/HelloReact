@@ -3,29 +3,29 @@ import FilterButton from "./components/FilterButton";
 import Form from "./components/Form";
 import Todo from "./components/Todo";
 let id_index = 100;
+
 function App(props) {
   const [tasks, setTasks] = useState(props.tasks);
+  const [filter, setFilter] = useState('All');
   const addTask = (name) =>
   {
     const new_id = `todo-${id_index++}`;
-    console.log(new_id)
     const newTask = { id: new_id, name, completed: false };
     setTasks([...tasks, newTask]);
   }
-  const find_task = (id) => {
-    const tasks_with_id = tasks.filter((el) => el.id === id);
-    if(tasks_with_id.length === 1)
-    {
-      return tasks_with_id[0];
-    }
-    else if(tasks_with_id.length === 0)
-      throw `Exception no to do list items with the ID ${id}`
-    else 
-      throw "Exception Multiple to do list items with the same ID"
-  }
   const toggleTaskCompleted = (id) => {
-    const task = find_task(id);
-    task.completed = !task.completed;
+    setTasks(tasks.map(el => {
+      if(el.id === id)
+        return {...el, completed:!el.completed};
+      return el;
+    }));
+  }
+  const editTask = (id, newName) => {
+    setTasks(tasks.map(el => {
+      if(el.id === id)
+        return {...el, name:newName};
+      return el;
+    }));
   }
   const deleteTask = (id) => {
     setTasks(tasks.filter((el) => el.id !== id))
@@ -38,12 +38,13 @@ function App(props) {
       id={el.id} 
       toggleTaskCompleted={toggleTaskCompleted}
       deleteTask={deleteTask}
+      editTask={editTask}
     />);
   
   return (
     <div className="todoapp stack-large">
       <h1>TodoMatic</h1>
-      <Form addTask={addTask}/>
+      <Form addTask={addTask} />
       <div className="filters btn-group stack-exception">
         <FilterButton name="all"/>
         <FilterButton name="active"/>
