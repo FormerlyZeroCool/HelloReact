@@ -82,7 +82,7 @@ export default function Todo(props) {
           editFieldRef.current.focus();
         else if(wasEditing)
           editButtonRef.current.focus();
-      }, [isEditing]);
+      }, [isEditing, wasEditing]);
 
     return (
       <li className="todo stack-small">
