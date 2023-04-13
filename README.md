@@ -1,2 +1,2 @@
 # HelloReact
-A todo list "Hello world" project to tart learning react
+A todo list "Hello world" project to start learning react
